@@ -27,6 +27,7 @@
     <Folder Include="Security\Guards\" />
     <Folder Include="Uploads\Files\" />
     <Folder Include="Uploads\Defaults\" />
+    <Folder Include="Uploads\Files\" />
   </ItemGroup>
 
 </Project>

@@ -53,7 +53,7 @@ namespace UniWall.Controllers
             }
             if (request.Subjects != null)
             {
-                query = query.Where(t => t.Subjects != null && t.Subjects.Select(s => s.Id).ToArray().Intersect(request.Subjects).Any());
+                query = query.Where(t => t.Subjects != null && t.Subjects.Select(s => s.Id).Intersect(request.Subjects).Any());
             }
             if (request.OnlineOnly != null)
             {
@@ -156,7 +156,7 @@ namespace UniWall.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(202)]
+        [ProducesResponseType(204)]
         public async Task<StatusCodeResult> Delete([FromRoute] int id)
         {
             Training training = await _db.Trainings

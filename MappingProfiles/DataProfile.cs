@@ -61,6 +61,12 @@ namespace UniWall.MappingProfiles
             CreateMap<Training, Training>()
                 .ForMember(dest => dest.Id, operation => operation.Ignore());
 
+            CreateMap<LecturerRequest, Lecturer>()
+                .ForMember(dest => dest.Subjects, operation => operation.Ignore());
+
+            CreateMap<Lecturer, LecturerResponse>()
+                .ForMember(dest => dest.Name, operation => operation.MapFrom(source => source.FirstName + " " + source.LastName));
+
         }
     }
 }
