@@ -23,4 +23,6 @@ namespace UniWall.Data.Entities
 
         public ICollection<Training> Trainings { get; set; }
     }
+
+    
 }
