@@ -71,6 +71,10 @@ namespace UniWall.MappingProfiles
             CreateMap<Lecturer, LecturerResponse>()
                 .ForMember(dest => dest.Name, operation => operation.MapFrom(source => source.FirstName + " " + source.LastName));
 
+            CreateMap<AttendeeRequest, Attendee>();
+
+            CreateMap<Attendee, AttendeeResponse>()
+                .ForMember(dest => dest.Name, operation => operation.MapFrom(source => source.FirstName + " " + source.LastName));
         }
     }
 }
