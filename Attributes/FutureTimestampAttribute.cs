@@ -11,7 +11,7 @@ namespace UniWall.Attributes
     {
         public override bool IsValid(object value)
         {
-            long now = TimeUtil.GetMiliseconds(DateTime.Now);
+            long now = TimeUtil.GetSeconds(DateTime.Now);
             long? target = value as long?;
 
             return target != null && target > now;

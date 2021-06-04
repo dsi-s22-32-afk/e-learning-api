@@ -12,5 +12,7 @@ namespace UniWall.Models.Responses
         public string Name { get; set; }
 
         public int AvatarId { get; set; }
+
+        public string Position { get; set; }
     }
 }

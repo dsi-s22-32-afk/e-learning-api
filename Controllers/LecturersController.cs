@@ -57,6 +57,7 @@ namespace UniWall.Controllers
             return Ok(Map<LecturerResponse>(lecturer));
         }
 
+
         [HttpPost("")]
         [ProducesResponseType(201, Type = typeof(LecturerResponse))]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

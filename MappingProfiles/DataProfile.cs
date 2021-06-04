@@ -27,12 +27,16 @@ namespace UniWall.MappingProfiles
 
             CreateMap<Subject, SubjectPartialResponse>();
 
-            CreateMap<Lecturer, LecturerPartialResponse>();
+            CreateMap<Lecturer, LecturerPartialResponse>()
+                .ForMember(
+                    dest => dest.Name,
+                    operation => operation.MapFrom(src => src.FirstName + " " + src.LastName)
+                );
 
             CreateMap<Training, TrainingResponse>()
                 .ForMember(
                     dest => dest.Time,
-                    operation => operation.MapFrom(source => TimeUtil.GetMiliseconds(source.Date))
+                    operation => operation.MapFrom(source => TimeUtil.GetSeconds(source.Date))
                 )
                 .ForMember(
                     dest => dest.Location,
@@ -52,7 +56,7 @@ namespace UniWall.MappingProfiles
             CreateMap<TrainingRequest, Training>()
                 .ForMember(
                     dest => dest.Date,
-                    operation => operation.MapFrom(source => TimeUtil.FromMiliseconds(source.Time))
+                    operation => operation.MapFrom(source => TimeUtil.FromSeconds(source.Time))
                 )
                 .ForMember(dest => dest.IsOnline, operation => operation.MapFrom(source => source.Online))
                 .ForMember(dest => dest.Lecturers, operation => operation.Ignore())
