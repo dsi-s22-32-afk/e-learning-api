@@ -25,5 +25,10 @@ namespace UniWall.Utilities
         {
             return (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).AddMilliseconds(millis);
         }
+
+        public static DateTime FromSeconds(long seconds)
+        {
+            return (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).AddSeconds(seconds);
+        }
     }
 }

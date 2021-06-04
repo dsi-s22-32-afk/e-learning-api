@@ -33,6 +33,7 @@ namespace UniWall.Controllers
             IQueryable<Training> query = _db.Trainings
                 .Include(t => t.Address)
                 .Include(t => t.Lecturers)
+                .Include(t => t.Attendees)
                 .Include(t => t.Subjects)
                 .Where(t => t.Date > DateTime.Now)
                 .OrderBy(t => t.Date);
@@ -43,23 +44,22 @@ namespace UniWall.Controllers
             }
             if (request.MaxTime != null)
             {
-                DateTime time = TimeUtil.FromMiliseconds((long)request.MaxTime);
+                DateTime time = TimeUtil.FromSeconds((long)request.MaxTime);
                 query = query.Where(t => t.Date <= time);
             }
             if (request.MinTime != null)
             {
-                DateTime time = TimeUtil.FromMiliseconds((long)request.MinTime);
+                DateTime time = TimeUtil.FromSeconds((long)request.MinTime);
                 query = query.Where(t => t.Date >= time);
             }
-            if (request.Subjects != null)
+            if (request.Subjects != null && request.Subjects.Any())
             {
-                query = query.Where(t => t.Subjects != null && t.Subjects.Select(s => s.Id).Intersect(request.Subjects).Any());
+                query = query.Where(t => t.Subjects.Any(s => request.Subjects.Contains(s.Id)));
             }
             if (request.OnlineOnly != null)
             {
                 query = query.Where(t => t.IsOnline);
             }
-
             return Ok(Paginate<Training, TrainingResponse>(query, request.Page));
         }
 
@@ -71,6 +71,7 @@ namespace UniWall.Controllers
                 .Include(t => t.Address)
                 .Include(t => t.Lecturers)
                 .Include(t => t.Subjects)
+                .Include(t => t.Attendees)
                 .Where(t => t.Id == id)
                 .FirstOrDefaultAsync();
             
@@ -80,6 +81,29 @@ namespace UniWall.Controllers
             }
 
             return Ok(Map<TrainingResponse>(training));
+        }
+
+
+        [HttpGet("filters")]
+        [ProducesResponseType(200, Type = typeof(TrainingFiltersResponse))]
+        public async Task<ObjectResult> GetFilters()
+        {
+            var cities = await _db.Trainings
+                .Include(t => t.Address)
+                .Where(t => t.Date > DateTime.Now)
+                .GroupBy(t => t.Address.City)
+                .Select(g => new KeyValResponse<string>{ Key = g.Key + " (" + g.Count() + ")", Value = g.Key })
+                .Where(i => i.Value != null)
+                .ToListAsync();
+            
+            var subjects = await _db.Subjects
+                .Select(s => new KeyValResponse<int>{ Key = s.Name, Value = s.Id })
+                .ToListAsync();
+
+            return Ok(new TrainingFiltersResponse { 
+                Cities = cities,
+                Subjects = subjects
+            });
         }
 
         [ProducesResponseType(201, Type = typeof(TrainingResponse))]

@@ -121,6 +121,17 @@ namespace UniWall
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowRemote",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyHeader();
+                                      builder.AllowAnyMethod();
+                                      builder.AllowAnyOrigin();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,6 +143,8 @@ namespace UniWall
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UniWall v1"));
             }
+
+            app.UseCors("AllowRemote");
 
             app.UseHttpsRedirection();
 

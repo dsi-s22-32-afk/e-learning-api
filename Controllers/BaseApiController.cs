@@ -24,7 +24,7 @@ namespace UniWall.Controllers
         protected readonly UserManager<IdentityUser> _userManager;
         protected readonly ApiDbContext _db;
 
-        private const int PAGE_SIZE = 3; 
+        private const int PAGE_SIZE = 5; 
 
         public BaseApiController(ApiDbContext db, IMapper mapper, IWebHostEnvironment env, UserManager<IdentityUser> userManager)
         {
