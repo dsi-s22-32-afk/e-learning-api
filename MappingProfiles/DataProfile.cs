@@ -17,6 +17,10 @@ namespace UniWall.MappingProfiles
     {
         public DataProfile()
         {
+            CreateMap<SubjectRequest, Subject>();
+
+            CreateMap<Subject, SubjectResponse>();
+
             CreateMap<ApiException, ErrorResponse>();
 
             CreateMap<HttpException, ErrorsListResponse>();

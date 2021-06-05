@@ -13,7 +13,9 @@ namespace UniWall.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string FirstName { get; set; }
+
+        public string FirstName { get; set;  }
+
 
         public string LastName { get; set; }
 
@@ -27,6 +29,8 @@ namespace UniWall.Data.Entities
 
         public ICollection<Subject> Subjects { get; set; }
 
-        public ICollection<Training> Trainings { get; set; } 
+        public ICollection<Training> Trainings { get; set; }
     }
+
+   
 }
