@@ -24,7 +24,7 @@ namespace UniWall.Controllers
         protected readonly UserManager<IdentityUser> _userManager;
         protected readonly ApiDbContext _db;
 
-        private const int PAGE_SIZE = 3; 
+        private const int PAGE_SIZE = 5; 
 
         public BaseApiController(ApiDbContext db, IMapper mapper, IWebHostEnvironment env, UserManager<IdentityUser> userManager)
         {
@@ -83,7 +83,9 @@ namespace UniWall.Controllers
 
         protected PaginatedListResponse<V> Paginate<T, V>(IQueryable<T> query, int? pageNumber = null)
         {
-            var list = query.ToPagedList(pageNumber ?? 1, PAGE_SIZE);
+            int page = pageNumber != null && pageNumber > 0 ? (int) pageNumber : 1;
+
+            var list = query.ToPagedList(page, PAGE_SIZE);
 
             return new()
             {

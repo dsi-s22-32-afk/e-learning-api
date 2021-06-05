@@ -31,12 +31,16 @@ namespace UniWall.MappingProfiles
 
             CreateMap<Subject, SubjectPartialResponse>();
 
-            CreateMap<Lecturer, LecturerPartialResponse>();
+            CreateMap<Lecturer, LecturerPartialResponse>()
+                .ForMember(
+                    dest => dest.Name,
+                    operation => operation.MapFrom(src => src.FirstName + " " + src.LastName)
+                );
 
             CreateMap<Training, TrainingResponse>()
                 .ForMember(
                     dest => dest.Time,
-                    operation => operation.MapFrom(source => TimeUtil.GetMiliseconds(source.Date))
+                    operation => operation.MapFrom(source => TimeUtil.GetSeconds(source.Date))
                 )
                 .ForMember(
                     dest => dest.Location,
@@ -56,7 +60,7 @@ namespace UniWall.MappingProfiles
             CreateMap<TrainingRequest, Training>()
                 .ForMember(
                     dest => dest.Date,
-                    operation => operation.MapFrom(source => TimeUtil.FromMiliseconds(source.Time))
+                    operation => operation.MapFrom(source => TimeUtil.FromSeconds(source.Time))
                 )
                 .ForMember(dest => dest.IsOnline, operation => operation.MapFrom(source => source.Online))
                 .ForMember(dest => dest.Lecturers, operation => operation.Ignore())
@@ -65,6 +69,16 @@ namespace UniWall.MappingProfiles
             CreateMap<Training, Training>()
                 .ForMember(dest => dest.Id, operation => operation.Ignore());
 
+            CreateMap<LecturerRequest, Lecturer>()
+                .ForMember(dest => dest.Subjects, operation => operation.Ignore());
+
+            CreateMap<Lecturer, LecturerResponse>()
+                .ForMember(dest => dest.Name, operation => operation.MapFrom(source => source.FirstName + " " + source.LastName));
+
+            CreateMap<AttendeeRequest, Attendee>();
+
+            CreateMap<Attendee, AttendeeResponse>()
+                .ForMember(dest => dest.Name, operation => operation.MapFrom(source => source.FirstName + " " + source.LastName));
         }
     }
 }

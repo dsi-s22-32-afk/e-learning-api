@@ -19,10 +19,6 @@ namespace UniWall.Data.Entities
 
         public string LastName { get; set; }
 
-
-        [NotMapped]
-        public string FullName { get { return FirstName + " " + LastName; } }
-
         public string Position { get; set; }
 
         public string Bio { get; set; }

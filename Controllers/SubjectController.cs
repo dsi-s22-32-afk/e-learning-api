@@ -15,7 +15,10 @@ using UniWall.Models.Responses;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace UniWall.Controllers
-{     public class SubjectController : BaseApiController
+{     
+    [ApiController]
+    [Route("v1/subjects")]
+    public class SubjectController : BaseApiController
     {
         public SubjectController(ApiDbContext db, IMapper mapper, IWebHostEnvironment env, UserManager<IdentityUser> userManager) : base(db, mapper, env, userManager)
         {
@@ -30,13 +33,11 @@ namespace UniWall.Controllers
             return Ok(Map<SubjectResponse>(list.ToArray()));
         }
 
-        [HttpPost("/")]
+        [HttpPost("")]
         [ProducesResponseType(200, Type = typeof(SubjectResponse))]
         public async Task<ObjectResult> Post([FromBody] SubjectRequest request)
         {
             Subject subject = Map<Subject>(request);
-
-
 
 
             await _db.AddAsync(subject);
@@ -46,7 +47,7 @@ namespace UniWall.Controllers
 
 
         }
-        [HttpPatch("l/{id}")]
+        [HttpPatch("{id}")]
         [ProducesResponseType(202, Type = typeof(SubjectResponse))]
         [ProducesResponseType(400, Type = typeof(ErrorsListResponse))]
         public async Task<ObjectResult> Patch([FromRoute] int id, [FromBody] SubjectRequest request)
